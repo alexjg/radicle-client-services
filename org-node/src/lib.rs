@@ -47,9 +47,11 @@ pub struct Options {
 
 #[derive(serde::Deserialize, Debug)]
 struct Project {
+    #[allow(dead_code)]
     #[serde(deserialize_with = "self::deserialize_timestamp")]
     timestamp: u64,
     anchor: Anchor,
+    #[allow(dead_code)]
     org: Org,
 }
 
@@ -97,11 +99,13 @@ impl Project {
 struct Anchor {
     #[serde(rename(deserialize = "objectId"))]
     object_id: String,
+    #[allow(dead_code)]
     multihash: String,
 }
 
 #[derive(serde::Deserialize, Debug)]
 struct Org {
+    #[allow(dead_code)]
     id: OrgId,
 }
 

@@ -8,11 +8,11 @@ members = [
 
 [patch.crates-io.radicle-daemon]
 git = "https://github.com/radicle-dev/radicle-link"
-branch = "master"
+rev = "2df248a8e077d02cbb075da073dbe7ab9e282a70"
 
 [patch.crates-io.librad]
 git = "https://github.com/radicle-dev/radicle-link"
-branch = "master"
+rev = "2df248a8e077d02cbb075da073dbe7ab9e282a70"
 
 [patch.crates-io.ethers]
 git = "https://github.com/gakonst/ethers-rs"
