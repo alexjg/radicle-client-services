@@ -9,7 +9,7 @@ use tokio::sync::mpsc;
 use tokio_stream::wrappers::ReceiverStream;
 
 use librad::{
-    git::{identities, replication, storage::fetcher, tracking},
+    git::{identities, tracking},
     net::{
         discovery::{self, Discovery as _},
         peer::{self, Peer},
@@ -32,9 +32,8 @@ pub mod signer;
 #[derive(Error, Debug)]
 #[non_exhaustive]
 pub enum Error {
-    #[error("error creating fetcher")]
-    Fetcher(#[from] Box<dyn std::error::Error + Send + Sync + 'static>),
-
+    // #[error("error creating fetcher")]
+    // Fetcher(#[from] Box<dyn std::error::Error + Send + Sync + 'static>),
     #[error("replication of {urn} from {remote_peer} already in-flight")]
     Concurrent { urn: Urn, remote_peer: PeerId },
 
@@ -50,9 +49,8 @@ pub enum Error {
     #[error(transparent)]
     Identities(#[from] Box<identities::Error>),
 
-    #[error(transparent)]
-    Replication(#[from] replication::Error),
-
+    // #[error(transparent)]
+    // Replication(#[from] replication::Error),
     #[error("failed to set project head: {0}")]
     SetHead(Box<dyn std::error::Error + Send + Sync + 'static>),
 
@@ -66,15 +64,15 @@ pub enum Error {
     Reply(String),
 }
 
-impl From<fetcher::Info> for Error {
-    fn from(
-        fetcher::Info {
-            urn, remote_peer, ..
-        }: fetcher::Info,
-    ) -> Self {
-        Self::Concurrent { urn, remote_peer }
-    }
-}
+// impl From<fetcher::Info> for Error {
+//     fn from(
+//         fetcher::Info {
+//             urn, remote_peer, ..
+//         }: fetcher::Info,
+//     ) -> Self {
+//         Self::Concurrent { urn, remote_peer }
+//     }
+// }
 
 /// Client configuration.
 pub struct Config {
@@ -171,7 +169,8 @@ impl Client {
                 advertised_addrs: None, // TODO: Should we use this?
                 membership,
                 network: Network::Main,
-                replication: replication::Config::default(),
+                // replication: replication::Config::default(),
+                replication: Default::default(),
                 fetch: Default::default(),
                 rate_limits: Default::default(),
             },
@@ -399,20 +398,30 @@ impl Client {
             let cfg = api.protocol_config().replication;
             let urn = urn.clone();
 
-            api.using_storage(move |storage| {
-                if tracking::track(storage, &urn, peer_id)? {
-                    let fetcher = fetcher::PeerToPeer::new(urn.clone(), peer_id, addr_hints)
-                        .build(storage)
-                        .map_err(|e| Error::Fetcher(e.into()))??;
+            let track = api
+                .using_storage({
+                    let urn = urn.clone();
 
-                    replication::replicate(storage, fetcher, cfg, None)?;
+                    move |storage| {
+                        if tracking::track(storage, &urn, peer_id)? {
+                            // let fetcher = fetcher::PeerToPeer::new(urn.clone(), peer_id, addr_hints)
+                            //     .build(storage)
+                            //     .map_err(|e| Error::Fetcher(e.into()))??;
 
-                    Ok::<_, Error>(true)
-                } else {
-                    Ok(false)
-                }
-            })
-            .await?
+                            Ok::<_, Error>(true)
+                        } else {
+                            Ok(false)
+                        }
+                    }
+                })
+                .await??;
+
+            if track {
+                api.replicate((peer_id, addr_hints), urn, None)
+                    .await
+                    .unwrap();
+            }
+            Ok(track)
         };
 
         match &result {
