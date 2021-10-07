@@ -147,6 +147,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "async-lock"
+version = "2.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e6a8ea61bf9947a1007c5cada31e647dbc77b103c679858150003ba697ea798b"
+dependencies = [
+ "event-listener",
+]
+
+[[package]]
 name = "async-process"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -546,9 +555,9 @@ dependencies = [
 
 [[package]]
 name = "cc"
-version = "1.0.70"
+version = "1.0.71"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d26a6ce4b6a484fa3edb70f7efa6fc430fd2b87285fe8b84304fd0936faa0dc0"
+checksum = "79c2681d6594606957bbb8631c4b90a7fcaaa72cdb714743a437b156d6a7eedd"
 dependencies = [
  "jobserver",
 ]
@@ -953,9 +962,9 @@ dependencies = [
 
 [[package]]
 name = "der"
-version = "0.4.3"
+version = "0.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2adca118c71ecd9ae094d4b68257b3fdfcb711a612b9eec7b5a0d27a5a70a5b4"
+checksum = "28e98c534e9c8a0483aa01d6f6913bc063de254311bd267c9cf535e9b70e15b2"
 dependencies = [
  "const-oid",
 ]
@@ -1524,7 +1533,6 @@ dependencies = [
  "futures-core",
  "futures-task",
  "futures-util",
- "num_cpus",
 ]
 
 [[package]]
@@ -1669,8 +1677,7 @@ dependencies = [
 [[package]]
 name = "git-actor"
 version = "0.5.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f6804cbf1f0e6aab663a4500e318cd6a126b8ac46250b622aa31dae426c90cf2"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
  "bstr",
  "btoi",
@@ -1683,8 +1690,7 @@ dependencies = [
 [[package]]
 name = "git-config"
 version = "0.1.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ef7e745122db44c3a0fd566e22224ca4f0779112c83e840f7aab3fdde2b4d218"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
  "dirs",
  "memchr",
@@ -1693,9 +1699,8 @@ dependencies = [
 
 [[package]]
 name = "git-diff"
-version = "0.9.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0246d8c9c738652a4f90e9aa45fcf1208335e345ea8a70924f54da7e44afeb4c"
+version = "0.10.0"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
  "git-hash",
  "git-object",
@@ -1705,8 +1710,7 @@ dependencies = [
 [[package]]
 name = "git-features"
 version = "0.16.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1ed4ff729168317c6579b1ace9bfee2d0ed27a2c0992840064056ff93275b958"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
  "crc32fast",
  "crossbeam-channel",
@@ -1725,8 +1729,7 @@ dependencies = [
 [[package]]
 name = "git-hash"
 version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b1d805604af02bbf26bec8c4dc91a3f6d3a6ebd74b6939f58f3ae70e3807e2b6"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
  "hex",
  "quick-error 2.0.1",
@@ -1735,8 +1738,7 @@ dependencies = [
 [[package]]
 name = "git-lock"
 version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "070eb0fe95ed708ea24a3b6e08f264a9028f0aaa05a1f28805fd858c2b8f7edc"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
  "fastrand",
  "git-tempfile",
@@ -1746,8 +1748,7 @@ dependencies = [
 [[package]]
 name = "git-object"
 version = "0.14.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "51f06b65954769dff827a76a5caa69b5e033a15d876ca07151935b66d44c4143"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
  "bstr",
  "git-actor",
@@ -1761,9 +1762,8 @@ dependencies = [
 
 [[package]]
 name = "git-odb"
-version = "0.21.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8865195f23b877c2e69c6d6019e2fa33c7ba4538621bed4edee7960d6d8ce7d2"
+version = "0.22.0"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
  "btoi",
  "git-features",
@@ -1776,9 +1776,8 @@ dependencies = [
 
 [[package]]
 name = "git-pack"
-version = "0.11.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a7ebd77d9f3fa2ba924f763b5fa05299ecbb8c5150031b663b717fb255a54480"
+version = "0.12.0"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
  "btoi",
  "byteorder",
@@ -1814,10 +1813,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "git-packetline"
+version = "0.11.0"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
+dependencies = [
+ "bstr",
+ "futures-io",
+ "futures-lite",
+ "hex",
+ "pin-project-lite",
+ "quick-error 2.0.1",
+]
+
+[[package]]
 name = "git-protocol"
-version = "0.10.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d674afc66ca84d2b0db80d95783af2beceaaea66fdbdc8f3c6fccac78d496ec5"
+version = "0.11.0"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
  "async-trait",
  "bstr",
@@ -1834,9 +1845,8 @@ dependencies = [
 
 [[package]]
 name = "git-ref"
-version = "0.7.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2461204c45682393e03ef5a9636d7023fa89561095bf5155dce6d506ac6f59fe"
+version = "0.8.0"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
  "filebuffer",
  "git-actor",
@@ -1853,11 +1863,10 @@ dependencies = [
 
 [[package]]
 name = "git-repository"
-version = "0.9.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "86f60143ca2fc6f969a2892c895e631200156c2c80bafc933ea292b773742f30"
+version = "0.10.0"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
- "bstr",
+ "clru",
  "git-actor",
  "git-config",
  "git-diff",
@@ -1881,8 +1890,7 @@ dependencies = [
 [[package]]
 name = "git-tempfile"
 version = "1.0.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3fac5c8f824d8af08551e1f07cabd6c48231e8631fdbefda31bc5c7093a864ce"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
  "dashmap",
  "libc",
@@ -1895,7 +1903,6 @@ dependencies = [
 [[package]]
 name = "git-trailers"
 version = "0.1.0"
-source = "git+https://github.com/radicle-dev/radicle-link?rev=2df248a8e077d02cbb075da073dbe7ab9e282a70#2df248a8e077d02cbb075da073dbe7ab9e282a70"
 dependencies = [
  "nom 5.1.2",
  "thiserror",
@@ -1903,16 +1910,15 @@ dependencies = [
 
 [[package]]
 name = "git-transport"
-version = "0.11.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bb221dc9eec246971ac5b208ce1c26eda719464f7ee7db688f9eec90fd3feee4"
+version = "0.12.0"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
  "async-trait",
  "bstr",
  "futures-io",
  "futures-lite",
  "git-features",
- "git-packetline",
+ "git-packetline 0.11.0",
  "git-url",
  "pin-project-lite",
  "quick-error 2.0.1",
@@ -1921,9 +1927,8 @@ dependencies = [
 
 [[package]]
 name = "git-traverse"
-version = "0.8.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "571045b61f6ff92524acde23d849a0fc9428c05c0294aff4ed5e7cb53040d3a8"
+version = "0.9.0"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
  "git-hash",
  "git-object",
@@ -1933,8 +1938,7 @@ dependencies = [
 [[package]]
 name = "git-url"
 version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "82a9b97e14b6fbbfe66bcb17721041c435429f8c53b260570eb8b842a7063788"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
  "bstr",
  "home",
@@ -1945,8 +1949,7 @@ dependencies = [
 [[package]]
 name = "git-validate"
 version = "0.5.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6b282136bedf27b985d84fc13a3fc8464882e02f8d077f0976e2ec6caea8ecca"
+source = "git+https://github.com/Byron/gitoxide.git?rev=bf0106ea21734d4e59d190b424c22743c22da966#bf0106ea21734d4e59d190b424c22743c22da966"
 dependencies = [
  "bstr",
  "quick-error 2.0.1",
@@ -2507,17 +2510,17 @@ dependencies = [
 [[package]]
 name = "librad"
 version = "0.1.0"
-source = "git+https://github.com/radicle-dev/radicle-link?rev=2df248a8e077d02cbb075da073dbe7ab9e282a70#2df248a8e077d02cbb075da073dbe7ab9e282a70"
 dependencies = [
+ "async-lock",
  "async-stream",
  "async-trait",
  "backoff",
  "blocking",
+ "bstr",
  "bytes 0.5.6",
  "dashmap",
  "deadpool",
  "directories",
- "dyn-clone",
  "either",
  "futures 0.3.17",
  "futures-timer",
@@ -2535,6 +2538,7 @@ dependencies = [
  "link-crypto",
  "link-git-protocol",
  "link-identities",
+ "link-replication",
  "minicbor",
  "multibase",
  "multihash",
@@ -2603,7 +2607,6 @@ dependencies = [
 [[package]]
 name = "link-canonical"
 version = "0.1.0"
-source = "git+https://github.com/radicle-dev/radicle-link?rev=2df248a8e077d02cbb075da073dbe7ab9e282a70#2df248a8e077d02cbb075da073dbe7ab9e282a70"
 dependencies = [
  "serde",
  "serde_bytes",
@@ -2615,7 +2618,6 @@ dependencies = [
 [[package]]
 name = "link-crypto"
 version = "0.1.0"
-source = "git+https://github.com/radicle-dev/radicle-link?rev=2df248a8e077d02cbb075da073dbe7ab9e282a70#2df248a8e077d02cbb075da073dbe7ab9e282a70"
 dependencies = [
  "async-trait",
  "dyn-clone",
@@ -2637,7 +2639,6 @@ dependencies = [
 [[package]]
 name = "link-git-protocol"
 version = "0.1.0"
-source = "git+https://github.com/radicle-dev/radicle-link?rev=2df248a8e077d02cbb075da073dbe7ab9e282a70#2df248a8e077d02cbb075da073dbe7ab9e282a70"
 dependencies = [
  "async-process",
  "async-trait",
@@ -2645,7 +2646,7 @@ dependencies = [
  "bstr",
  "futures-lite",
  "futures-util",
- "git-packetline",
+ "git-packetline 0.10.1",
  "git-repository",
  "git2",
  "once_cell",
@@ -2657,7 +2658,6 @@ dependencies = [
 [[package]]
 name = "link-identities"
 version = "0.1.0"
-source = "git+https://github.com/radicle-dev/radicle-link?rev=2df248a8e077d02cbb075da073dbe7ab9e282a70#2df248a8e077d02cbb075da073dbe7ab9e282a70"
 dependencies = [
  "either",
  "futures-lite",
@@ -2682,6 +2682,26 @@ dependencies = [
  "typenum",
  "url",
  "xorf",
+]
+
+[[package]]
+name = "link-replication"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "blocking",
+ "bstr",
+ "either",
+ "futures-lite",
+ "git-repository",
+ "itertools",
+ "link-crypto",
+ "link-git-protocol",
+ "parking_lot",
+ "radicle-data",
+ "rand 0.7.3",
+ "thiserror",
+ "tracing",
 ]
 
 [[package]]
@@ -3565,7 +3585,6 @@ dependencies = [
 [[package]]
 name = "radicle-daemon"
 version = "0.1.0"
-source = "git+https://github.com/radicle-dev/radicle-link?rev=2df248a8e077d02cbb075da073dbe7ab9e282a70#2df248a8e077d02cbb075da073dbe7ab9e282a70"
 dependencies = [
  "anyhow",
  "async-stream",
@@ -3588,7 +3607,6 @@ dependencies = [
 [[package]]
 name = "radicle-data"
 version = "0.1.0"
-source = "git+https://github.com/radicle-dev/radicle-link?rev=2df248a8e077d02cbb075da073dbe7ab9e282a70#2df248a8e077d02cbb075da073dbe7ab9e282a70"
 dependencies = [
  "minicbor",
  "nonempty 0.6.0",
@@ -3600,8 +3618,8 @@ dependencies = [
 [[package]]
 name = "radicle-git-ext"
 version = "0.1.0"
-source = "git+https://github.com/radicle-dev/radicle-link?rev=2df248a8e077d02cbb075da073dbe7ab9e282a70#2df248a8e077d02cbb075da073dbe7ab9e282a70"
 dependencies = [
+ "git-repository",
  "git2",
  "minicbor",
  "multihash",
@@ -3614,7 +3632,6 @@ dependencies = [
 [[package]]
 name = "radicle-git-helpers"
 version = "0.1.0"
-source = "git+https://github.com/radicle-dev/radicle-link?rev=2df248a8e077d02cbb075da073dbe7ab9e282a70#2df248a8e077d02cbb075da073dbe7ab9e282a70"
 dependencies = [
  "anyhow",
  "git2",
@@ -3685,7 +3702,6 @@ dependencies = [
 [[package]]
 name = "radicle-macros"
 version = "0.1.0"
-source = "git+https://github.com/radicle-dev/radicle-link?rev=2df248a8e077d02cbb075da073dbe7ab9e282a70#2df248a8e077d02cbb075da073dbe7ab9e282a70"
 dependencies = [
  "quote",
  "radicle-git-ext",
@@ -3736,7 +3752,6 @@ dependencies = [
 [[package]]
 name = "radicle-std-ext"
 version = "0.1.0"
-source = "git+https://github.com/radicle-dev/radicle-link?rev=2df248a8e077d02cbb075da073dbe7ab9e282a70#2df248a8e077d02cbb075da073dbe7ab9e282a70"
 
 [[package]]
 name = "radicle-surf"
@@ -4830,9 +4845,7 @@ dependencies = [
  "memchr",
  "mio 0.7.13",
  "num_cpus",
- "once_cell",
  "pin-project-lite",
- "signal-hook-registry",
  "tokio-macros",
  "winapi 0.3.9",
 ]
@@ -5592,4 +5605,4 @@ dependencies = [
 [[patch.unused]]
 name = "ethers"
 version = "0.5.3"
-source = "git+https://github.com/gakonst/ethers-rs?branch=master#7d5ea2c1e387088231f6fe17adf8e54de2394152"
+source = "git+https://github.com/gakonst/ethers-rs?branch=master#b93cc4af75f28d599ba8651d5006da09e125c4c2"
