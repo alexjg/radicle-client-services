@@ -8,15 +8,11 @@ members = [
 
 [patch.crates-io.radicle-daemon]
 git = "https://github.com/radicle-dev/radicle-link"
-branch = "master"
+tag = "cycle/2021-10-05"
 
 [patch.crates-io.librad]
 git = "https://github.com/radicle-dev/radicle-link"
-branch = "master"
-
-[patch.crates-io.ethers]
-git = "https://github.com/gakonst/ethers-rs"
-branch = "master"
+tag = "cycle/2021-10-05"
 
 [patch.crates-io.thrussh-encoding]
 git = "https://github.com/FintanH/thrussh.git"
