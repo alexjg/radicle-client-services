@@ -249,14 +249,14 @@ impl Client {
             }
             Request::TrackProject(urn, timeout, reply) => {
                 let mut peers = api.providers(urn.clone(), timeout);
-                let project = Client::get_project_head(&urn, &api).await?;
+                let project = Client::get_project_head(&urn, api).await?;
 
                 // Don't track projects that already exist locally.
                 if let Some(Head { remote, branch }) = project {
                     tracing::debug!(target: "org-node", "Project {} exists, (re-)setting head", urn);
 
                     // Set the project head if it isn't already set.
-                    Client::set_head(&urn, &remote, &branch, &paths)?;
+                    Client::set_head(&urn, &remote, &branch, paths)?;
 
                     return reply
                         .send(Ok(None))
@@ -267,13 +267,13 @@ impl Client {
                 while let Some(peer) = peers.next().await {
                     if let Ok(tracked) = Client::track_project(api, &urn, &peer).await {
                         let response = if tracked {
-                            let Head { remote, branch } = Client::get_project_head(&urn, &api)
+                            let Head { remote, branch } = Client::get_project_head(&urn, api)
                                 .await?
                                 .expect("a project that was just tracked should exist");
                             // Tracking doesn't automatically set the repository head, we have to do it
                             // manually. We set the head to the default branch of the project
                             // maintainer.
-                            Client::set_head(&urn, &remote, &branch, &paths)?;
+                            Client::set_head(&urn, &remote, &branch, paths)?;
 
                             Some(peer.peer_id)
                         } else {
@@ -369,7 +369,7 @@ impl Client {
 
         tracing::debug!(target: "org-node", "Setting ref {:?} -> {:?}", &local_branch_ref, oid);
         repository
-            .reference(&local_branch_ref, oid, true, "set-local-branch (org-node)")
+            .reference(local_branch_ref, oid, true, "set-local-branch (org-node)")
             .map_err(|e| Error::SetHead(Box::new(e)))?;
 
         tracing::debug!(target: "org-node", "Setting ref {:?} -> {:?}", &branch_ref, oid);
@@ -379,7 +379,7 @@ impl Client {
 
         tracing::debug!(target: "org-node", "Setting ref {:?} -> {:?}", &head, local_branch_ref);
         repository
-            .reference_symbolic(&head, &local_branch_ref, true, "set-head (org-node)")
+            .reference_symbolic(head, local_branch_ref, true, "set-head (org-node)")
             .map_err(|e| Error::SetHead(Box::new(e)))?;
 
         Ok(())
