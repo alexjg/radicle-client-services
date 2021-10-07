@@ -18,5 +18,13 @@ tag = "cycle/2021-10-05"
 git = "https://github.com/FintanH/thrussh.git"
 branch = "generic-agent"
 
+[patch.crates-io.git2]
+git = "https://github.com/radicle-dev/git2-rs.git"
+rev = "ae027b9e7b125f56397bbb7d8652b3427deeede6"
+
+[patch.crates-io.libgit2-sys]
+git = "https://github.com/radicle-dev/git2-rs.git"
+rev = "ae027b9e7b125f56397bbb7d8652b3427deeede6"
+
 [profile.release]
 debug = true
