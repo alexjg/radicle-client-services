@@ -5612,8 +5612,3 @@ dependencies = [
  "syn",
  "synstructure",
 ]
-
-[[patch.unused]]
-name = "ethers"
-version = "0.5.3"
-source = "git+https://github.com/gakonst/ethers-rs?branch=master#cb46b1afedd80f959412252c19329ee2d659c687"
