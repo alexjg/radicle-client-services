@@ -22,10 +22,6 @@ rev = "03bc0a0f4ed6c2cff4eb63e2c2040860b502396c"
 git = "https://github.com/radicle-dev/radicle-link"
 rev = "03bc0a0f4ed6c2cff4eb63e2c2040860b502396c"
 
-[patch.crates-io.ethers]
-git = "https://github.com/gakonst/ethers-rs"
-branch = "master"
-
 [patch.crates-io.thrussh-encoding]
 git = "https://github.com/FintanH/thrussh.git"
 branch = "generic-agent"
