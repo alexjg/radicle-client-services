@@ -11,22 +11,16 @@ git = "https://github.com/Byron/gitoxide.git"
 rev = "bf0106ea21734d4e59d190b424c22743c22da966"
 
 [patch.crates-io.radicle-daemon]
-# git = "https://github.com/radicle-dev/radicle-link"
-# rev = "2df248a8e077d02cbb075da073dbe7ab9e282a70"
-# rev = "ee419310c46ec6fda3917d48760b435ae82066d6"
-path = "../radicle-link/daemon"
+git = "https://github.com/radicle-dev/radicle-link"
+rev = "03bc0a0f4ed6c2cff4eb63e2c2040860b502396c"
 
 [patch.crates-io.librad]
-# git = "https://github.com/radicle-dev/radicle-link"
-# rev = "2df248a8e077d02cbb075da073dbe7ab9e282a70"
-# rev = "ee419310c46ec6fda3917d48760b435ae82066d6"
-path = "../radicle-link/librad"
+git = "https://github.com/radicle-dev/radicle-link"
+rev = "03bc0a0f4ed6c2cff4eb63e2c2040860b502396c"
 
 [patch.crates-io.link-git-protocol]
-# git = "https://github.com/radicle-dev/radicle-link"
-# rev = "2df248a8e077d02cbb075da073dbe7ab9e282a70"
-# rev = "ee419310c46ec6fda3917d48760b435ae82066d6"
-path = "../radicle-link/link-git-protocol"
+git = "https://github.com/radicle-dev/radicle-link"
+rev = "03bc0a0f4ed6c2cff4eb63e2c2040860b502396c"
 
 [patch.crates-io.ethers]
 git = "https://github.com/gakonst/ethers-rs"
