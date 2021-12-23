@@ -15,7 +15,8 @@ FROM debian:buster-slim@sha256:c8152821b158dd171b4acf92afb0a58fc2faa179a7e0af8ac
 EXPOSE 8778/tcp
 RUN apt-get update && apt-get install -y libssl1.1 git && rm -rf /var/lib/apt/lists/*
 COPY --from=build /usr/local/cargo/bin/radicle-git-server /usr/local/bin/radicle-git-server
+COPY --from=build /usr/local/cargo/bin/pre-receive /usr/local/bin/pre-receive
 
 WORKDIR /app/radicle
 
-ENTRYPOINT ["/usr/local/bin/radicle-git-server", "--git-receive-pack", "--root", "/app/radicle/root", "--listen", "0.0.0.0:8778"]
+ENTRYPOINT ["/usr/local/bin/radicle-git-server", "--git-receive-pack", "--identity", "/app/radicle/identity", "--root", "/app/radicle/root", "--listen", "0.0.0.0:8778"]
