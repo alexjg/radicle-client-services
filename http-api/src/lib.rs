@@ -537,7 +537,8 @@ async fn project_root_handler(ctx: Context) -> Result<Json, Rejection> {
                 SomeIdentity::Project(project) => {
                     let meta: project::Metadata = project.clone().try_into().ok()?;
                     let head =
-                        get_head_commit(&repo, &meta.urn, &meta.default_branch, &project).ok()?;
+                        get_head_commit(&repo, &meta.urn, &meta.default_branch, &meta.delegates)
+                            .ok()?;
 
                     Some(Info {
                         meta,
@@ -621,7 +622,8 @@ async fn delegates_projects_handler(ctx: Context, delegate: Urn) -> Result<impl 
 
                     let meta: project::Metadata = project.clone().try_into().ok()?;
                     let head =
-                        get_head_commit(&repo, &meta.urn, &meta.default_branch, &project).ok()?;
+                        get_head_commit(&repo, &meta.urn, &meta.default_branch, &meta.delegates)
+                            .ok()?;
 
                     Some(Info {
                         meta,
@@ -671,7 +673,7 @@ fn project_info(urn: Urn, paths: Paths) -> Result<Info, Error> {
     let storage = ReadOnly::open(&paths)?;
     let project = identities::project::get(&storage, &urn)?.ok_or(Error::NotFound)?;
     let meta: project::Metadata = project.clone().try_into()?;
-    let head = get_head_commit(&repo, &urn, &meta.default_branch, &project)?;
+    let head = get_head_commit(&repo, &urn, &meta.default_branch, &meta.delegates)?;
 
     Ok(Info {
         head: head.id,
@@ -683,10 +685,8 @@ fn get_head_commit(
     repo: &git::Repository,
     urn: &Urn,
     default_branch: &str,
-    project: &identities::Project,
+    delegates: &Vec<project::Delegate>,
 ) -> Result<git::Commit, Error> {
-    use either::Either;
-
     let namespace = git::namespace::Namespace::try_from(urn.encode_id().as_str())?;
     let result =
         git::Browser::new_with_namespace(repo, &namespace, git::Branch::local(default_branch));
@@ -694,23 +694,24 @@ fn get_head_commit(
     let browser = match result {
         Ok(b) => b,
         Err(_) => {
-            if project.delegations().iter().count() == 1 {
-                let maintainer_public_key = project
-                    .delegations()
-                    .iter()
-                    .flat_map(|either| match either {
-                        Either::Left(pk) => Either::Left(std::iter::once(pk)),
-                        Either::Right(indirect) => Either::Right(indirect.delegations().iter()),
-                    })
-                    .next()
-                    .expect("missing delegation");
+            if delegates.len() == 1 {
+                let maintainer_peer_id = match &delegates[0] {
+                    project::Delegate::Direct { id } => id,
+                    project::Delegate::Indirect { ids, .. } => {
+                        if ids.len() == 1 {
+                            ids.iter().next().unwrap()
+                        } else {
+                            panic!("projects with multiple indirect delegates not supported");
+                        }
+                    }
+                };
 
                 let result = git::Browser::new_with_namespace(
                     repo,
                     &namespace,
                     git::Branch::remote(
                         &format!("heads/{}", default_branch),
-                        &radicle_daemon::librad::PeerId::from(*maintainer_public_key).to_string(),
+                        &maintainer_peer_id.to_string(),
                     ),
                 );
 
