@@ -694,31 +694,48 @@ fn get_head_commit(
     let browser = match result {
         Ok(b) => b,
         Err(_) => {
-            if delegates.len() == 1 {
-                let maintainer_peer_id = match &delegates[0] {
-                    project::Delegate::Direct { id } => id,
-                    project::Delegate::Indirect { ids, .. } => {
-                        if ids.len() == 1 {
-                            ids.iter().next().unwrap()
-                        } else {
-                            panic!("projects with multiple indirect delegates not supported");
-                        }
+            tracing::info!("no default branch set, falling back to project delegates");
+            let resolved_default_delegate = match &delegates[..] {
+                [project::Delegate::Direct { id }] => Ok(id),
+                [project::Delegate::Indirect { ids, .. }] if ids.len() == 1 => {
+                    Ok(ids.iter().next().unwrap())
+                }
+                [project::Delegate::Indirect { ids, .. }] => {
+                    tracing::error!(
+                        default_branch,
+                        ?delegates,
+                        ?ids,
+                        "unable to resolve default branch. The project had a single indirect \
+                        delegate with either zero or more than one direct delegates",
+                    );
+                    Err(Error::NoDefaultBranch)
+                }
+                other => {
+                    if other.len() > 1 {
+                        tracing::error!(
+                            default_branch,
+                            ?delegates,
+                            "unable to resolve default branch as the project had multiple delegates"
+                        );
+                    } else {
+                        tracing::error!(
+                            default_branch,
+                            ?delegates,
+                            "unable to resolve default branch as the project had no delegates"
+                        );
                     }
-                };
-
-                let result = git::Browser::new_with_namespace(
-                    repo,
-                    &namespace,
-                    git::Branch::remote(
-                        &format!("heads/{}", default_branch),
-                        &maintainer_peer_id.to_string(),
-                    ),
-                );
-
-                result.expect("could not get remote's default branch")
-            } else {
-                panic!("multi-delegate projects are not yet supported");
-            }
+                    Err(Error::NoDefaultBranch)
+                }
+            }?;
+            git::Browser::new_with_namespace(
+                repo,
+                &namespace,
+                git::Branch::remote(
+                    &format!("heads/{}", default_branch),
+                    &resolved_default_delegate.to_string(),
+                ),
+            )
+            .map_err(|_| Error::NoDefaultBranch)?
         }
     };
     let history = browser.get();
