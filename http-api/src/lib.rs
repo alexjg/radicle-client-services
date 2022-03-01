@@ -535,8 +535,9 @@ async fn project_root_handler(ctx: Context) -> Result<Json, Rejection> {
         .filter_map(|res| {
             res.map(|id| match id {
                 SomeIdentity::Project(project) => {
-                    let meta: project::Metadata = project.try_into().ok()?;
-                    let head = get_head_commit(&repo, &meta.urn, &meta.default_branch).ok()?;
+                    let meta: project::Metadata = project.clone().try_into().ok()?;
+                    let head =
+                        get_head_commit(&repo, &meta.urn, &meta.default_branch, &project).ok()?;
 
                     Some(Info {
                         meta,
@@ -618,8 +619,9 @@ async fn delegates_projects_handler(ctx: Context, delegate: Urn) -> Result<impl 
                         return None;
                     }
 
-                    let meta: project::Metadata = project.try_into().ok()?;
-                    let head = get_head_commit(&repo, &meta.urn, &meta.default_branch).ok()?;
+                    let meta: project::Metadata = project.clone().try_into().ok()?;
+                    let head =
+                        get_head_commit(&repo, &meta.urn, &meta.default_branch, &project).ok()?;
 
                     Some(Info {
                         meta,
@@ -668,8 +670,8 @@ fn project_info(urn: Urn, paths: Paths) -> Result<Info, Error> {
     let repo = git::Repository::new(paths.git_dir())?;
     let storage = ReadOnly::open(&paths)?;
     let project = identities::project::get(&storage, &urn)?.ok_or(Error::NotFound)?;
-    let meta: project::Metadata = project.try_into()?;
-    let head = get_head_commit(&repo, &urn, &meta.default_branch)?;
+    let meta: project::Metadata = project.clone().try_into()?;
+    let head = get_head_commit(&repo, &urn, &meta.default_branch, &project)?;
 
     Ok(Info {
         head: head.id,
@@ -681,11 +683,43 @@ fn get_head_commit(
     repo: &git::Repository,
     urn: &Urn,
     default_branch: &str,
+    project: &identities::Project,
 ) -> Result<git::Commit, Error> {
+    use either::Either;
+
     let namespace = git::namespace::Namespace::try_from(urn.encode_id().as_str())?;
-    let browser =
-        git::Browser::new_with_namespace(repo, &namespace, git::Branch::local(default_branch))
-            .map_err(|_| Error::MissingLocalState)?;
+    let result =
+        git::Browser::new_with_namespace(repo, &namespace, git::Branch::local(default_branch));
+
+    let browser = match result {
+        Ok(b) => b,
+        Err(_) => {
+            if project.delegations().iter().count() == 1 {
+                let maintainer_public_key = project
+                    .delegations()
+                    .iter()
+                    .flat_map(|either| match either {
+                        Either::Left(pk) => Either::Left(std::iter::once(pk)),
+                        Either::Right(indirect) => Either::Right(indirect.delegations().iter()),
+                    })
+                    .next()
+                    .expect("missing delegation");
+
+                let result = git::Browser::new_with_namespace(
+                    repo,
+                    &namespace,
+                    git::Branch::remote(
+                        &format!("heads/{}", default_branch),
+                        &radicle_daemon::librad::PeerId::from(*maintainer_public_key).to_string(),
+                    ),
+                );
+
+                result.expect("could not get remote's default branch")
+            } else {
+                panic!("multi-delegate projects are not yet supported");
+            }
+        }
+    };
     let history = browser.get();
 
     Ok(history.first().to_owned())
