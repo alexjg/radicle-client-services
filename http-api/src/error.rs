@@ -16,6 +16,9 @@ pub enum Error {
     #[error("missing default branch in project")]
     MissingDefaultBranch,
 
+    #[error("multi-delegate projects are not supported")]
+    UnsupportedMultiDelegateProject,
+
     /// The project does not have a local state.
     #[error("missing local state in project")]
     MissingLocalState,
